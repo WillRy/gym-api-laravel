@@ -10,15 +10,24 @@ class AlunoController extends Controller
 {
     public function index()
     {
-        $alunos = Aluno::withTrashed()->paginate(10);
+        $alunos = Aluno::withTrashed()
+            ->with("matricula", function ($query) {
+                $query->whereNull('deleted_at');
+            })
+            ->paginate(10);
         return response()->json($alunos);
     }
 
     public function show(Request $request, $idAluno)
     {
         //withTrashed: trazer alunos ativos e inativos
-        $aluno = Aluno::withTrashed()->where(["id" => $idAluno])->first();
-        if(empty($aluno)) {
+        $aluno = Aluno::withTrashed()
+            ->with("matricula", function ($query) {
+                $query->whereNull('deleted_at');
+            })
+            ->where(["id" => $idAluno])
+            ->first();
+        if (empty($aluno)) {
             throw new NotFoundHttpException();
         }
 
@@ -43,13 +52,13 @@ class AlunoController extends Controller
     {
         //withTrashed: trazer alunos ativos e inativos
         $aluno = Aluno::withTrashed()->where(["id" => $idAluno])->first();
-        if(empty($aluno)) {
+        if (empty($aluno)) {
             throw new NotFoundHttpException();
         }
 
         $request->validate([
             "nome" => "required|max:255|min:3",
-            'email' => 'required|email|unique:alunos,email,'.$idAluno.',id', //unique permite o email do proprio usuario
+            'email' => 'required|email|unique:alunos,email,' . $idAluno . ',id', //unique permite o email do proprio usuario
             "sexo" => "required|in:masculino,feminino,outro",
             "dt_nascimento" => "required|date_format:Y-m-d"
         ]);
@@ -64,7 +73,7 @@ class AlunoController extends Controller
     {
         //withTrashed: trazer alunos ativos e inativos
         $aluno = Aluno::withTrashed()->where(["id" => $idAluno])->first();
-        if(empty($aluno)) {
+        if (empty($aluno)) {
             throw new NotFoundHttpException();
         }
 

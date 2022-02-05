@@ -12,14 +12,14 @@ class MatriculaController extends Controller
 {
     public function index()
     {
-        $matriculas = Matricula::withTrashed()->paginate(10);
+        $matriculas = Matricula::withTrashed()->with("aluno")->with("plano")->paginate(10);
         return response()->json($matriculas);
     }
 
     public function show(Request $request, $idMatricula)
     {
         //withTrashed: trazer alunos ativos e inativos
-        $plano = Matricula::withTrashed()->where(["id" => $idMatricula])->first();
+        $plano = Matricula::withTrashed()->with("aluno")->with("plano")->where(["id" => $idMatricula])->first();
         if(empty($plano)) {
             throw new NotFoundHttpException();
         }
