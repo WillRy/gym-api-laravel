@@ -18,6 +18,11 @@ Repositório contem exemplo de autenticação JWT seguindo os padrões do Larave
 - Criar .env com base no .env.example e configurar credencial do banco de dados no .env
 - Executar migration e seed dos dados. Migration cria a estrutura do banco de dados e seed popula com dados.
 
+**Executar migrations e seeds**
+```shell
+php artisan migrate:fresh --seed
+```
+
 
 ## Ambiente docker
 

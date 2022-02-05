@@ -30,7 +30,11 @@ Route::group([
 
 Route::group([
     'middleware' => ['api','auth:api'],
-    "prefix" => "users"
+    "prefix" => "alunos"
 ], function ($router) {
-
+    Route::get("/", [\App\Http\Controllers\AlunoController::class, "index"])->name("alunos.index");
+    Route::get("/{idAluno}", [\App\Http\Controllers\AlunoController::class, "show"])->name("alunos.show");
+    Route::put("/{idAluno}", [\App\Http\Controllers\AlunoController::class, "update"])->name("alunos.update");
+    Route::delete("/{idAluno}", [\App\Http\Controllers\AlunoController::class, "delete"])->name("alunos.delete");
+    Route::post("/", [\App\Http\Controllers\AlunoController::class, "store"])->name("alunos.store");
 });
