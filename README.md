@@ -12,6 +12,11 @@ Repositório contem exemplo de autenticação JWT seguindo os padrões do Larave
 - Rotas de autenticação em "routes/api.php"
 - Controller em "app/Http/Controllers/AuthController"
 
+## Endpoints
+
+- Basta importar o arquivo "endpoints-insomnia.json" no
+  client HTTP insomnia ou postman
+
 ## Como executar
 
 - Baixar o projeto
