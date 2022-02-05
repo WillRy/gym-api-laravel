@@ -15,5 +15,6 @@ class DatabaseSeeder extends Seeder
     {
          \App\Models\User::factory(10)->create();
          $this->call(AlunosTableSeed::class);
+        \App\Models\Plano::factory(10)->create();
     }
 }

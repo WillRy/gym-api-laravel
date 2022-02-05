@@ -38,3 +38,14 @@ Route::group([
     Route::delete("/{idAluno}", [\App\Http\Controllers\AlunoController::class, "delete"])->name("alunos.delete");
     Route::post("/", [\App\Http\Controllers\AlunoController::class, "store"])->name("alunos.store");
 });
+
+Route::group([
+    'middleware' => ['api','auth:api'],
+    "prefix" => "planos"
+], function ($router) {
+    Route::get("/", [\App\Http\Controllers\PlanoController::class, "index"])->name("planos.index");
+    Route::get("/{idPlano}", [\App\Http\Controllers\PlanoController::class, "show"])->name("planos.show");
+    Route::put("/{idPlano}", [\App\Http\Controllers\PlanoController::class, "update"])->name("planos.update");
+    Route::delete("/{idPlano}", [\App\Http\Controllers\PlanoController::class, "delete"])->name("planos.delete");
+    Route::post("/", [\App\Http\Controllers\PlanoController::class, "store"])->name("planos.store");
+});
