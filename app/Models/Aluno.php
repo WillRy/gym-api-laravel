@@ -23,4 +23,9 @@ class Aluno extends Model
     {
         return $query->whereNotNull("deleted_at");
     }
+
+    public function matricula()
+    {
+        return $this->hasOne(Matricula::class, "aluno_id", "id");
+    }
 }

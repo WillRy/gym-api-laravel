@@ -49,3 +49,14 @@ Route::group([
     Route::delete("/{idPlano}", [\App\Http\Controllers\PlanoController::class, "delete"])->name("planos.delete");
     Route::post("/", [\App\Http\Controllers\PlanoController::class, "store"])->name("planos.store");
 });
+
+Route::group([
+    'middleware' => ['api','auth:api'],
+    "prefix" => "matriculas"
+], function ($router) {
+    Route::get("/", [\App\Http\Controllers\MatriculaController::class, "index"])->name("matriculas.index");
+    Route::get("/{idPlano}", [\App\Http\Controllers\MatriculaController::class, "show"])->name("matriculas.show");
+    Route::put("/{idPlano}", [\App\Http\Controllers\MatriculaController::class, "update"])->name("matriculas.update");
+    Route::delete("/{idPlano}", [\App\Http\Controllers\MatriculaController::class, "delete"])->name("matriculas.delete");
+    Route::post("/", [\App\Http\Controllers\MatriculaController::class, "store"])->name("matriculas.store");
+});

@@ -6,13 +6,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Plano extends Model
+class Matricula extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $table = "planos";
+    protected $table = "matriculas";
 
-    protected $fillable = ["nome", "descricao", "duracao", "valor"];
+    protected $fillable = ["aluno_id", "plano_id", "dt_inicio", "dt_fim"];
 
     public function scopeAtivos($query)
     {
@@ -24,8 +24,8 @@ class Plano extends Model
         return $query->whereNotNull("deleted_at");
     }
 
-    public function matriculas()
+    public function aluno()
     {
-        return $this->hasMany(Matricula::class, "plano_id", "id");
+        return $this->belongsTo(Aluno::class, "aluno_id", "id");
     }
 }
