@@ -40,7 +40,7 @@ class MatriculaController extends Controller
 
         $dataInicio = (new \DateTime($request->post("dt_inicio")))->format("Y-m-d");
         $dataFim = (new \DateTime($request->post("dt_inicio")))
-            ->add(\DateInterval::createFromDateString("+{$plano->duracao}days"))
+            ->add(\DateInterval::createFromDateString("+{$plano->duracao}months"))
             ->format("Y-m-d");
 
         $dados["dt_inicio"] = $dataInicio;

@@ -8,9 +8,15 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class PlanoController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $planos = Plano::withTrashed()->paginate(10);
+        $search = $request->input("pesquisa");
+
+        $planos = Plano::withTrashed()
+        ->when(!empty($search), function($q) use($search) {
+            $q->whereRaw("nome LIKE ?",["%$search%"]);
+        })
+        ->paginate(10);
         return response()->json($planos);
     }
 

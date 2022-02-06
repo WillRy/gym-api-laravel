@@ -30,7 +30,7 @@ class DatabaseSeeder extends Seeder
              $plano = Plano::all()->random();
 
              $dt_fim = (new \DateTime())
-                 ->add(\DateInterval::createFromDateString("+{$plano->duracao}days"))
+                 ->add(\DateInterval::createFromDateString("+{$plano->duracao}months"))
                  ->format("Y-m-d");
 
              \App\Models\Matricula::factory()->count(1)->state([
