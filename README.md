@@ -1,9 +1,22 @@
-# API Laravel com JWT
+# API Laravel com JWT (ainda em construção)
 
 Repositório contem exemplo de autenticação JWT seguindo os padrões do Laravel, usando
 
 - Eloquent para models
 - Auth Guard para autenticação e segurança
+
+
+## Explicação do sistema
+
+- A academia pode cadastrar planos da academia
+- A academia pode cadastrar alunos
+- A academia pode cadastrar matrículas(vinculando o aluno em um plano da academia)
+
+
+## FrontEnd
+
+O frontend é uma SPA feita em VueJS, no repositório:
+[https://github.com/WillRy/gym-spa-laravel](https://github.com/WillRy/gym-spa-laravel)
 
 
 ## Implementação
