@@ -6,20 +6,45 @@ use App\Models\Matricula;
 use App\Models\Plano;
 use App\Rules\MatriculaUnica;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class MatriculaController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $matriculas = Matricula::withTrashed()->with("aluno")->with("plano")->paginate(10);
+        $search = $request->input("pesquisa");
+        // DB::enableQueryLog();
+        $matriculas = Matricula::withTrashed()
+        ->with("aluno", function ($query) {
+            $query->withTrashed();
+        })
+        ->with("plano", function ($query) {
+            $query->withTrashed();
+        })
+        ->whereHas('aluno',function($query) use ($search){
+            $query->whereRaw("nome LIKE ? ",["%$search%"]);
+        })
+        ->orWhereHas('plano',function($query) use ($search){
+            $query->whereRaw("nome LIKE ? ",["%$search%"]);
+        })
+        ->orderBy("matriculas.created_at", "DESC")
+        ->paginate(10);
+        // dd(DB::getQueryLog());
         return response()->json($matriculas);
     }
 
     public function show(Request $request, $idMatricula)
     {
         //withTrashed: trazer alunos ativos e inativos
-        $plano = Matricula::withTrashed()->with("aluno")->with("plano")->where(["id" => $idMatricula])->first();
+        $plano = Matricula::withTrashed()
+        ->with("aluno", function ($query) {
+            $query->withTrashed();
+        })
+        ->with("plano", function ($query) {
+            $query->withTrashed();
+        })
+        ->where(["id" => $idMatricula])->first();
         if(empty($plano)) {
             throw new NotFoundHttpException();
         }

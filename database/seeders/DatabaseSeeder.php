@@ -15,15 +15,15 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-         \App\Models\User::factory(10)->create();
+         \App\Models\User::factory(30)->create();
 
          \App\Models\User::factory()->count(1)->state([
              "email" => "teste@teste.com"
          ])->create();
 
-         $this->call(AlunosTableSeed::class);
+         \App\Models\Aluno::factory(60)->create();
 
-         \App\Models\Plano::factory(10)->create();
+         \App\Models\Plano::factory(20)->create();
 
          $alunos = Aluno::all();
          foreach ($alunos as $aluno) {

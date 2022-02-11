@@ -16,7 +16,7 @@ class PlanoFactory extends Factory
         return [
             "nome" => $this->faker->word,
             "descricao" => $this->faker->paragraph,
-            "duracao" => $this->faker->randomElement($duracoes),
+            "duracao" => $this->faker->randomFloat(0,1,12),
             "valor" => $this->faker->randomFloat(2,'10','100')
         ];
     }

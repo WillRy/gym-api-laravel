@@ -14,6 +14,8 @@ class Matricula extends Model
 
     protected $fillable = ["aluno_id", "plano_id", "dt_inicio", "dt_fim"];
 
+    protected $appends = ['desativado'];
+
     public function scopeAtivos($query)
     {
         return $query->whereNull("deleted_at");
@@ -32,5 +34,13 @@ class Matricula extends Model
     public function plano()
     {
         return $this->belongsTo(Plano::class, "plano_id", "id");
+    }
+
+    public function getDesativadoAttribute($value)
+    {
+        $hoje = new \DateTime();
+        $expiracao = new \DateTime($this->dt_fim);
+
+        return $hoje->diff($expiracao)->invert || !empty($this->deleted_at);
     }
 }
