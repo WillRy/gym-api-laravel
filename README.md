@@ -50,6 +50,16 @@ php artisan jwt:secret
 
 ```
 
+**Executar servidor**
+
+Você pode usar o ambiente docker ou usar o servidor embutido do laravel.
+
+Servidor embutido:
+
+```shell
+php artisan serve --port=8000
+```
+
 ## Ambiente docker
 
 Este repositório contém um ambiente docker, basta executar os comandos:
