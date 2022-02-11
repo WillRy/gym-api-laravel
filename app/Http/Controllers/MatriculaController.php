@@ -81,6 +81,7 @@ class MatriculaController extends Controller
         $request->validate([
             "dt_inicio" => "required|date_format:Y-m-d",
             "dt_fim" => "required|date_format:Y-m-d|after:".$request->post("dt_inicio"),
+            "plano_id" => "required|exists:planos,id"
         ]);
 
         $matricula = Matricula::withTrashed()->where(["id" => $idMatricula])->first();
