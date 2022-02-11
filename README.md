@@ -39,8 +39,16 @@ O frontend é uma SPA feita em VueJS, no repositório:
 **Executar migrations e seeds**
 ```shell
 php artisan migrate:fresh --seed
+
 ```
 
+**Configurar criptografia do JWT**
+```shell
+php artisan key:generate
+
+php artisan jwt:secret
+
+```
 
 ## Ambiente docker
 

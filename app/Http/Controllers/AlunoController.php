@@ -12,28 +12,13 @@ class AlunoController extends Controller
     public function index(Request $request)
     {
         $search = $request->input("pesquisa");
-        $alunos = Aluno::withTrashed()
-            ->with("matricula", function ($query) {
-                $query->with("plano", function ($query) {
-                    $query->withTrashed();
-                });
-            })
-            ->when(!empty($search), function($q) use($search) {
-                $q->whereRaw("nome LIKE ?",["%$search%"]);
-            })
-            ->paginate(10);
+        $alunos = Aluno::alunosPaginados($search);
         return response()->json($alunos);
     }
 
     public function show(Request $request, $idAluno)
     {
-        //withTrashed: trazer alunos ativos e inativos
-        $aluno = Aluno::withTrashed()
-            ->with("matricula", function ($query) {
-                $query->whereNull('deleted_at');
-            })
-            ->where(["id" => $idAluno])
-            ->first();
+        $aluno = Aluno::alunoDetalhes($idAluno);
         if (empty($aluno)) {
             throw new NotFoundHttpException();
         }
@@ -57,8 +42,7 @@ class AlunoController extends Controller
 
     public function update(Request $request, $idAluno)
     {
-        //withTrashed: trazer alunos ativos e inativos
-        $aluno = Aluno::withTrashed()->where(["id" => $idAluno])->first();
+        $aluno = Aluno::alunoPorID($idAluno);
         if (empty($aluno)) {
             throw new NotFoundHttpException();
         }
@@ -78,8 +62,7 @@ class AlunoController extends Controller
 
     public function delete(Request $request, $idAluno)
     {
-        //withTrashed: trazer alunos ativos e inativos
-        $aluno = Aluno::withTrashed()->where(["id" => $idAluno])->first();
+        $aluno = Aluno::alunoPorID($idAluno);
         if (empty($aluno)) {
             throw new NotFoundHttpException();
         }

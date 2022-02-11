@@ -43,4 +43,53 @@ class Matricula extends Model
 
         return $hoje->diff($expiracao)->invert || !empty($this->deleted_at);
     }
+
+    public static function matriculasPaginadas($search)
+    {
+        return Matricula::withTrashed()
+            ->with("aluno", function ($query) {
+                $query->withTrashed();
+            })
+            ->with("plano", function ($query) {
+                $query->withTrashed();
+            })
+            ->whereHas('aluno', function ($query) use ($search) {
+                $query->whereRaw("nome LIKE ? ", ["%$search%"])->withTrashed();
+            })
+            ->orWhereHas('plano', function ($query) use ($search) {
+                $query->whereRaw("nome LIKE ? ", ["%$search%"])->withTrashed();
+            })
+            ->orderBy("matriculas.created_at", "DESC")
+            ->paginate(10);
+    }
+
+    public static function detalhes($idMatricula)
+    {
+        return Matricula::withTrashed()
+            ->with("aluno", function ($query) {
+                $query->withTrashed();
+            })
+            ->with("plano", function ($query) {
+                $query->withTrashed();
+            })
+            ->where(["id" => $idMatricula])->first();
+    }
+
+    public static function matriculaPorID($idMatricula)
+    {
+        return Matricula::withTrashed()->where(["id" => $idMatricula])->first();
+    }
+
+    public static function createComDuracao($dados, $duracaoPlano)
+    {
+        $dataInicio = (new \DateTime($dados["dt_inicio"]))->format("Y-m-d");
+        $dataFim = (new \DateTime($dados["dt_inicio"]))
+            ->add(\DateInterval::createFromDateString("+{$duracaoPlano}months"))
+            ->format("Y-m-d");
+
+        $dados["dt_inicio"] = $dataInicio;
+        $dados["dt_fim"] = $dataFim;
+
+        return self::create($dados);
+    }
 }

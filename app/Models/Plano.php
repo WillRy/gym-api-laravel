@@ -28,4 +28,18 @@ class Plano extends Model
     {
         return $this->hasMany(Matricula::class, "plano_id", "id");
     }
+
+    public static function planosPaginado($search)
+    {
+        return Plano::withTrashed()
+            ->when(!empty($search), function ($q) use ($search) {
+                $q->whereRaw("nome LIKE ?", ["%$search%"]);
+            })
+            ->paginate(10);
+    }
+
+    public static function planoPorID($idPlano)
+    {
+        return Plano::withTrashed()->where(["id" => $idPlano])->first();
+    }
 }
