@@ -23,10 +23,10 @@ class MatriculaController extends Controller
             $query->withTrashed();
         })
         ->whereHas('aluno',function($query) use ($search){
-            $query->whereRaw("nome LIKE ? ",["%$search%"]);
+            $query->whereRaw("nome LIKE ? ",["%$search%"])->withTrashed();
         })
         ->orWhereHas('plano',function($query) use ($search){
-            $query->whereRaw("nome LIKE ? ",["%$search%"]);
+            $query->whereRaw("nome LIKE ? ",["%$search%"])->withTrashed();
         })
         ->orderBy("matriculas.created_at", "DESC")
         ->paginate(10);
