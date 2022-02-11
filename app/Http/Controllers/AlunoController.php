@@ -12,7 +12,6 @@ class AlunoController extends Controller
     public function index(Request $request)
     {
         $search = $request->input("pesquisa");
-        // DB::enableQueryLog();
         $alunos = Aluno::withTrashed()
             ->with("matricula", function ($query) {
                 $query->with("plano", function ($query) {
@@ -23,13 +22,6 @@ class AlunoController extends Controller
                 $q->whereRaw("nome LIKE ?",["%$search%"]);
             })
             ->paginate(10);
-            // dd(DB::getQueryLog());
-            // $alunos = Aluno::withTrashed()
-            // ->with("matricula.plano")
-            // ->when(!empty($search), function($q) use($search) {
-            //     $q->whereRaw("nome LIKE ?",["%$search%"]);
-            // })
-            // ->paginate(10);
         return response()->json($alunos);
     }
 
