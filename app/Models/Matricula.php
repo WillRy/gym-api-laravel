@@ -18,12 +18,12 @@ class Matricula extends Model
 
     public function scopeAtivos($query)
     {
-        return $query->whereNull("deleted_at");
+        return $query->withoutTrashed();
     }
 
     public function scopeInativos($query)
     {
-        return $query->whereNotNull("deleted_at");
+        return $query->onlyTrashed();
     }
 
     public function aluno()
@@ -44,7 +44,7 @@ class Matricula extends Model
         return $hoje->diff($expiracao)->invert || !empty($this->deleted_at);
     }
 
-    public static function matriculasPaginadas($search)
+    public static function matriculasPaginadas($search, $filtroAtivo = "todos")
     {
         return Matricula::withTrashed()
             ->with("aluno", function ($query) {
@@ -58,6 +58,15 @@ class Matricula extends Model
             })
             ->orWhereHas('plano', function ($query) use ($search) {
                 $query->whereRaw("nome LIKE ? ", ["%$search%"])->withTrashed();
+            })
+            ->when(!empty($filtroAtivo), function ($q) use ($filtroAtivo) {
+                if ($filtroAtivo === "todos") {
+                    $q->withTrashed(); //incluir ativos e inativos
+                } elseif ($filtroAtivo === "ativo") {
+                    $q->ativos();
+                } else {
+                    $q->inativos();
+                }
             })
             ->orderBy("matriculas.created_at", "DESC")
             ->paginate(10);

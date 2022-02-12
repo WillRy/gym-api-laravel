@@ -13,7 +13,8 @@ class MatriculaController extends Controller
     public function index(Request $request)
     {
         $search = $request->input("pesquisa");
-        $matriculas = Matricula::matriculasPaginadas($search);
+        $filtroAtivo = $request->input("status", "todos");
+        $matriculas = Matricula::matriculasPaginadas($search, $filtroAtivo);
         return response()->json($matriculas);
     }
 

@@ -12,7 +12,8 @@ class AlunoController extends Controller
     public function index(Request $request)
     {
         $search = $request->input("pesquisa");
-        $alunos = Aluno::alunosPaginados($search);
+        $filtroAtivo = $request->input("status", "todos");
+        $alunos = Aluno::alunosPaginados($search, $filtroAtivo);
         return response()->json($alunos);
     }
 

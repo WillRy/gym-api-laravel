@@ -11,7 +11,8 @@ class PlanoController extends Controller
     public function index(Request $request)
     {
         $search = $request->input("pesquisa");
-        $planos = Plano::planosPaginado($search);
+        $filtroAtivo = $request->input("status", "todos");
+        $planos = Plano::planosPaginado($search, $filtroAtivo);
         return response()->json($planos);
     }
 
