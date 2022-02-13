@@ -30,23 +30,26 @@ O frontend é uma SPA feita em VueJS, no repositório:
 - Basta importar o arquivo "endpoints-insomnia.json" no
   client HTTP insomnia ou postman
 
-## Como executar
+## Como executar?
 
 - Baixar o projeto
+- Executar composer para instalar dependencias
 - Criar .env com base no .env.example e configurar credencial do banco de dados no .env
 - Executar migration e seed dos dados. Migration cria a estrutura do banco de dados e seed popula com dados.
 
-**Executar migrations e seeds**
+**Comandos que devem ser executados:**
 ```shell
-php artisan migrate:fresh --seed
+#instalar dependencias do composer
+composer install
 
-```
-
-**Configurar criptografia do JWT**
-```shell
+#configura criptografia do laravel
 php artisan key:generate
 
+#configura criptografia dos tokens JWT
 php artisan jwt:secret
+
+#executa migrations e seed
+php artisan migrate:fresh --seed
 
 ```
 
