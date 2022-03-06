@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\PlanoRequest;
 use App\Models\Plano;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -27,34 +28,18 @@ class PlanoController extends Controller
         return response()->json($plano);
     }
 
-    public function store(Request $request)
+    public function store(PlanoRequest $request)
     {
-        $request->validate([
-            "nome" => "required|max:255|min:3|unique:planos,nome",
-            "descricao" => "nullable|max:255|min:3",
-            "duracao" => "required|integer|min:1",
-            "valor" => "required|numeric"
-        ]);
-
         $plano = Plano::create($request->all());
 
         return response()->json($plano);
     }
 
-    public function update(Request $request, $idPlano)
+    public function update(PlanoRequest $request, $idPlano)
     {
         //withTrashed: trazer alunos ativos e inativos
         $plano = Plano::planoPorID($idPlano);
-        if (empty($plano)) {
-            throw new NotFoundHttpException();
-        }
-
-        $request->validate([
-            "nome" => "required|max:255|min:3|unique:planos,nome," . $idPlano . ",id",
-            "descricao" => "nullable|max:255|min:3",
-            "duracao" => "required|integer|min:1",
-            "valor" => "required|numeric"
-        ]);
+        if (empty($plano)) throw new NotFoundHttpException();
 
         $plano->update($request->all());
         $plano->refresh();
@@ -66,9 +51,7 @@ class PlanoController extends Controller
     {
         //withTrashed: trazer alunos ativos e inativos
         $plano = Plano::planoPorID($idPlano);
-        if (empty($plano)) {
-            throw new NotFoundHttpException();
-        }
+        if (empty($plano)) throw new NotFoundHttpException();
 
         $plano->delete();
 

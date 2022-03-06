@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\AlunoRequest;
 use App\Models\Aluno;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class AlunoController extends Controller
@@ -20,40 +20,21 @@ class AlunoController extends Controller
     public function show(Request $request, $idAluno)
     {
         $aluno = Aluno::alunoDetalhes($idAluno);
-        if (empty($aluno)) {
-            throw new NotFoundHttpException();
-        }
+        if (empty($aluno)) throw new NotFoundHttpException();
 
         return response()->json($aluno);
     }
 
-    public function store(Request $request)
+    public function store(AlunoRequest $request)
     {
-        $request->validate([
-            "nome" => "required|max:255|min:3",
-            "email" => "required|email|unique:alunos,email",
-            "sexo" => "required|in:masculino,feminino,outro",
-            "dt_nascimento" => "required|date_format:Y-m-d"
-        ]);
-
         $aluno = Aluno::create($request->all());
-
         return response()->json($aluno);
     }
 
-    public function update(Request $request, $idAluno)
+    public function update(AlunoRequest $request, $idAluno)
     {
         $aluno = Aluno::alunoPorID($idAluno);
-        if (empty($aluno)) {
-            throw new NotFoundHttpException();
-        }
-
-        $request->validate([
-            "nome" => "required|max:255|min:3",
-            'email' => 'required|email|unique:alunos,email,' . $idAluno . ',id', //unique permite o email do proprio usuario
-            "sexo" => "required|in:masculino,feminino,outro",
-            "dt_nascimento" => "required|date_format:Y-m-d"
-        ]);
+        if (empty($aluno)) throw new NotFoundHttpException();
 
         $aluno->update($request->all());
         $aluno->refresh();
@@ -64,9 +45,7 @@ class AlunoController extends Controller
     public function delete(Request $request, $idAluno)
     {
         $aluno = Aluno::alunoPorID($idAluno);
-        if (empty($aluno)) {
-            throw new NotFoundHttpException();
-        }
+        if (empty($aluno)) throw new NotFoundHttpException();
 
         $aluno->delete();
 
