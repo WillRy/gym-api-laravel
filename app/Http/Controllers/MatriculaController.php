@@ -49,7 +49,6 @@ class MatriculaController extends Controller
 
     public function delete(Request $request, $idMatricula)
     {
-        //withTrashed: trazer alunos ativos e inativos
         $matricula = Matricula::matriculaPorID($idMatricula);
         if (empty($matricula)) throw new NotFoundHttpException();
 

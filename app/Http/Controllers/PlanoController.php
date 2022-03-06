@@ -19,11 +19,8 @@ class PlanoController extends Controller
 
     public function show(Request $request, $idPlano)
     {
-        //withTrashed: trazer alunos ativos e inativos
         $plano = Plano::planoPorID($idPlano);
-        if (empty($plano)) {
-            throw new NotFoundHttpException();
-        }
+        if (empty($plano)) throw new NotFoundHttpException();
 
         return response()->json($plano);
     }
@@ -37,7 +34,6 @@ class PlanoController extends Controller
 
     public function update(PlanoRequest $request, $idPlano)
     {
-        //withTrashed: trazer alunos ativos e inativos
         $plano = Plano::planoPorID($idPlano);
         if (empty($plano)) throw new NotFoundHttpException();
 
@@ -49,7 +45,6 @@ class PlanoController extends Controller
 
     public function delete(Request $request, $idPlano)
     {
-        //withTrashed: trazer alunos ativos e inativos
         $plano = Plano::planoPorID($idPlano);
         if (empty($plano)) throw new NotFoundHttpException();
 
